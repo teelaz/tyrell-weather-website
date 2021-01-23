@@ -1,11 +1,12 @@
 const request = require('request');
 
-const forecast = (latitude, longitude, callback) => {
+const forecast = (latitude, longitude, preciseLocation, callback) => {
   const url =
     'http://api.weatherstack.com/current?access_key=744d0006f75f280b9e25d9d3dffb4267&query=' +
     latitude +
     ',' +
     longitude;
+  const location = preciseLocation;
 
   request({ url, json: true }, (error, { body }) => {
     if (error) {
@@ -15,12 +16,7 @@ const forecast = (latitude, longitude, callback) => {
     } else {
       callback(
         undefined,
-        body.current.weather_descriptions[0] +
-          '. It is currently ' +
-          body.current.temperature +
-          ' degress. It feels like ' +
-          body.current.feelslike +
-          ' degrees.'
+        `The weather in ${location}, is currently, ${body.current.weather_descriptions[0]}, with a temperature of ${body.current.temperature} degress, that feels like ${body.current.feelslike} degrees.`
       );
     }
   });
